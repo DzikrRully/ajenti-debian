@@ -3,10 +3,10 @@ FROM debian:latest
 
 # Update the system and install necessary packages
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y curl gnupg2
+    apt-get install -y curl gnupg2 wget apt-transport-https
 
 # Add the Ajenti repository
-RUN echo 'deb http://repo.ajenti.org/debian main main debian' >> /etc/apt/sources.list && \
+RUN echo 'deb http://repo.ajenti.org/debian main main ubuntu' >> /etc/apt/sources.list.d/ajenti.list && \
     wget http://repo.ajenti.org/debian/key -O- | apt-key add -
 
 # Install Ajenti
