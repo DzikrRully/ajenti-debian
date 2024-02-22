@@ -1,15 +1,19 @@
-# Use the latest version of Debian as the base image
+# Use the latest Debian base image
 FROM debian:latest
 
 # Update the system and install necessary packages
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    python3 python3-pip python3-lxml python3-dev libffi-dev libssl-dev libjpeg-dev libpng-dev uuid-dev python3-dbus
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y curl gnupg2
+
+# Add the Ajenti repository
+RUN echo 'deb http://repo.ajenti.org/debian main main debian' >> /etc/apt/sources.list && \
+    wget http://repo.ajenti.org/debian/key -O- | apt-key add -
 
 # Install Ajenti
-RUN pip3 install ajenti-panel ajenti.plugin.dashboard ajenti.plugin.settings ajenti.plugin.plugins
+RUN apt-get update && apt-get install -y ajenti
 
 # Expose the Ajenti port
 EXPOSE 8000
 
-# Start Ajenti when the container launches
+# Start Ajenti
 CMD ["ajenti-panel", "-d"]
